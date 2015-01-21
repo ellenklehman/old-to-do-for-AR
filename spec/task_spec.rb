@@ -2,32 +2,19 @@ require("spec_helper")
 
 describe(Task) do
 
-  describe("#description") do
-    it("lets you read the description out") do
-      test_task = Task.new({:description => "scrub the zebra"})
-      expect(test_task.description()).to(eq("scrub the zebra"))
-    end
+  it("belongs to a list") do
+    list = List.create({:name => "list"})
+    task = Task.create({:description => "task", :list_id => list.id})
+    expect(task.list()).to(eq(list))
   end
 
-  describe(".all") do
-    it("is empty at first") do
-      expect(Task.all()).to(eq([]))
-    end
-  end
-
-  describe("#save") do
-    it("adds a task to the array of saved tasks") do
-      test_task = Task.new({:description => "learn SQL"})
-      test_task.save()
-      expect(Task.all()).to(eq([test_task]))
-    end
-  end
-
-  describe("#==") do
-    it("is the same task if it has the same description") do
-      task1 = Task.new({:description => "learn SQL"})
-      task2 = Task.new({:description => "learn SQL"})
-      expect(task1).to(eq(task2))
+  describe("#not_done") do
+    it("returns the not done tasks") do
+      not_done_tasks = (1..5).to_a().map() do |number|
+        Task.create(:description => "task #{number}", :done => false)
+      end
+      done_task = Task.create({:description => "done task", :done => true})
+      expect(Task.not_done()).to(eq(not_done_tasks))
     end
   end
 end

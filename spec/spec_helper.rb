@@ -2,11 +2,16 @@ require("rspec")
 require("pg")
 require("sinatra/activerecord")
 require("task")
-
-DB = PG.connect({:dbname => 'to_do_test'})
+require("list")
 
 RSpec.configure do |config|
   config.after(:each) do
-    DB.exec("DELETE FROM tasks *;")
+    Task.all().each() do |task|
+      task.destroy()
+    end
+
+    List.all().each() do |list|
+      list.destroy()
+    end
   end
 end
