@@ -1,5 +1,6 @@
 require("rspec")
 require("pg")
+require("sinatra/activerecord")
 require("task")
 
 DB = PG.connect({:dbname => 'to_do_test'})
